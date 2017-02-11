@@ -1,0 +1,2 @@
+defmodule Simplates do
+end
