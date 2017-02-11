@@ -1,4 +1,6 @@
-# Simplates
+# Simplates 
+[![Build Status](https://travis-ci.org/LawfulGood/simplates.svg?branch=master)](https://travis-ci.org/LawfulGood/simplates)
+[![Coverage Status](https://coveralls.io/repos/github/LawfulGood/simplates/badge.svg?branch=master)](https://coveralls.io/github/LawfulGood/simplates?branch=master)
 
 **TODO: Add description**
 
