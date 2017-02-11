@@ -10,6 +10,8 @@ defmodule Simplates.Specline do
 
   Status can be:
     `:ok` => Specline so we need to trim the first line
+    `:ok_missing_renderer` => :ok, but the renderer was missing
+    `:ok_missing_content_type` => :ok, but the content_type was missing
     `:empty` => No specline at all, don't trim line
   """
   def parse_specline(line) do 
