@@ -1,10 +1,18 @@
 defmodule Simplates.SimplateTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias Simplates.Simplate, as: Simplate
 
   def simple_simplate(contents \\ "Greetings, program!", filepath \\ "index.html.spt") do
     Simplate.create(contents, filepath)
+  end
+
+  test "create from file works" do
+    assert Simplate.create_from_file("index.spt") == simple_simplate("Greetings, program!", "index.spt")
+  end
+
+  test "create from string works" do
+    assert Simplate.create_from_string("Greetings, program!") == simple_simplate("Greetings, program!", nil)
   end
 
   @basic_simplate """
