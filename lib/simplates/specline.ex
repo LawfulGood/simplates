@@ -22,7 +22,7 @@ defmodule Simplates.Specline do
   end
 
   def long_renderer(short) do
-    Module.concat(["Infuse","Simplates","Renderers", short <> "Renderer"])
+    Module.concat(["Simplates","Renderers", short <> "Renderer"])
   end
 
   defp parse_full_specline(line) do

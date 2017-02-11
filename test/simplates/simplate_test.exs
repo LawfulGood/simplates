@@ -1,4 +1,4 @@
-defmodule Infuse.Simplates.SimplateTest do
+defmodule Simplates.SimplateTest do
   use ExUnit.Case
 
   alias Simplates.Simplate, as: Simplate
