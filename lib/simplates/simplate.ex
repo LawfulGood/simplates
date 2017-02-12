@@ -24,13 +24,13 @@ defmodule Simplates.Simplate do
   @doc """
   
   """
-  def render(simplate) do
+  def render(%Simplates.Simplate{} = simplate) do
     render(simplate, config(:default_content_type))
   end
-  def render(simplate, content_type) do
+  def render(%Simplates.Simplate{} = simplate, content_type) do
     render(simplate, content_type, {})
   end
-  def render(simplate, content_type, context = {}) do
+  def render(%Simplates.Simplate{} = simplate, content_type, context) do
     %{text: nil, content_type: content_type}
   end
 
