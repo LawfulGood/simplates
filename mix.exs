@@ -16,7 +16,7 @@ defmodule Simplates.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger]]
+    [applications: [:logger,:mime]]
   end
 
   # Dependencies can be Hex packages:
@@ -30,6 +30,7 @@ defmodule Simplates.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
+      {:mime, github: "elixir-lang/mime"},
       {:excoveralls, "~> 0.6", only: :test}
     ]
   end

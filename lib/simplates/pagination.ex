@@ -21,7 +21,7 @@ defmodule Simplates.Pagination do
       |> split_pages()
       |> fill_blank_pages()
 
-    %{code: hd(pages), templates: tl(pages)}
+    %{code: hd(pages), templates: templates_by_content_type(tl(pages))}
   end
 
   defp split_pages(raw) do
@@ -47,7 +47,8 @@ defmodule Simplates.Pagination do
 
     %Simplates.Page{
       raw: page_content, 
-      compiled: nil, 
+      # Is this the right place to compile?
+      compiled: renderer.compile(page_content), 
       renderer: renderer,
       content_type: content_type,
       specline_status: status
@@ -61,6 +62,12 @@ defmodule Simplates.Pagination do
       1 -> blank ++ pages
       _ -> pages
     end
+  end
+  
+  defp templates_by_content_type(pages) do
+    Enum.reduce(pages, %{}, fn page, acc ->
+      Map.put(acc, page.content_type, page) 
+    end)
   end
 
 end

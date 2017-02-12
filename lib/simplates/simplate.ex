@@ -3,7 +3,7 @@ defmodule Simplates.Simplate do
   defstruct raw: nil, code: nil, templates: [], filepath: nil
 
   def create_from_file(fs_path) do
-    raw = File.read(fs_path)
+    {:ok, raw} = File.read(fs_path)
 
     create(raw, fs_path)
   end
@@ -13,10 +13,12 @@ defmodule Simplates.Simplate do
   end
 
   def create(raw, fs_path) do
+    pages = Simplates.Pagination.parse_pages(raw)
+
     %Simplates.Simplate{
       raw: raw,
-      code: nil,
-      templates: [],
+      code: pages.code,
+      templates: pages.templates,
       filepath: fs_path
     }
   end
@@ -28,10 +30,16 @@ defmodule Simplates.Simplate do
     render(simplate, config(:default_content_type))
   end
   def render(%Simplates.Simplate{} = simplate, content_type) do
-    render(simplate, content_type, {})
+    render(simplate, content_type, [])
   end
   def render(%Simplates.Simplate{} = simplate, content_type, context) do
-    %{text: nil, content_type: content_type}
+    content_type = ensure_content_type(content_type)
+
+    template = simplate.templates[content_type]
+
+    {output, _bindings} = template.renderer.render(template.compiled, context)
+
+    %{output: output, content_type: content_type}
   end
 
   def config(:default_content_type) do
@@ -40,5 +48,14 @@ defmodule Simplates.Simplate do
 
   def config(:default_renderer) do
     Application.get_env(:infuse, :default_renderer) || Simplates.Renderers.EExRenderer
+  end
+
+  defp ensure_content_type(content_type) do
+    case MIME.valid?(content_type) do
+      true ->
+        content_type
+      false ->
+        config(:default_content_type)
+    end
   end
 end
