@@ -2,7 +2,9 @@
 [![Build Status](https://travis-ci.org/LawfulGood/simplates.svg?branch=master)](https://travis-ci.org/LawfulGood/simplates)
 [![Coverage Status](https://coveralls.io/repos/github/LawfulGood/simplates/badge.svg?branch=master)](https://coveralls.io/github/LawfulGood/simplates?branch=master)
 
-Simplates are a file format for server-side web programming.
+Simplates are a file format for server-side web programming. Used currently in [Infuse](https://github.com/LawfulGood/infuse).
+
+Learn more at: [simplates.org](http://simplates.org/)
 
 ## Why Simplates? 
 Mixing code into templates leads to unmaintainable spaghetti. On the other 

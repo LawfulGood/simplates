@@ -1,9 +1,11 @@
 defmodule Simplates.Mixfile do
   use Mix.Project
 
+  @version "0.1.1"
+
   def project do
     [app: :simplates,
-     version: "0.1.1",
+     version: @version,
      elixir: "~> 1.3",
      description: description(),
      package: package(),
