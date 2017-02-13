@@ -1,4 +1,11 @@
 defmodule Simplates.Specline do
+  @moduledoc """
+  Sections in a simplate are either "code sections" or "content sections". Content 
+  sections may have a "specline" after the `[---]` separator. The format of the specline 
+  is `content-type` via `renderer`. The syntax of the content sections depends on the 
+  renderer. The logic sections are Elixir.
+  """
+
   import Simplates.Simplate, only: [config: 1]
     
   @specline_full_regex ~r/^(?P<content_type>[a-zA-Z\/]+)\s*via\s*(?P<renderer>\w+)$/

@@ -1,17 +1,30 @@
 defmodule Simplates.Simplate do
+  @moduledoc """
+  A simplate is a dynamic resource with multiple syntaxes in one file.
+  """
+
   @enforce_keys [:raw, :code, :templates]
   defstruct raw: nil, code: nil, templates: [], filepath: nil
 
+  @doc """
+  Returns a simplate based on a filesystem path
+  """
   def create_from_file(fs_path) do
     {:ok, raw} = File.read(fs_path)
 
     create(raw, fs_path)
   end
 
+  @doc """
+  Returns a simplate based on a string, misses extension negotiation
+  """
   def create_from_string(raw) do
     create(raw, nil)
   end
 
+  @doc """
+  Creates a simplate based on the file 
+  """
   def create(raw, fs_path) do
     pages = Simplates.Pagination.parse_pages(raw)
 

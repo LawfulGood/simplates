@@ -3,13 +3,19 @@ defmodule Simplates.Mixfile do
 
   def project do
     [app: :simplates,
-     version: "0.1.0",
+     version: "0.1.1",
      elixir: "~> 1.3",
+     description: description(),
+     package: package(),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      test_coverage: [tool: ExCoveralls],
      preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test],
-     deps: deps()]
+     deps: deps(),
+     name: "Simplates",
+     docs: [extras: ["README.md"], main: "readme",
+            source_ref: "v#{@version}",
+            source_url: "https://github.com/LawfulGood/simplates"]]
   end
 
   # Configuration for the OTP application
@@ -30,8 +36,24 @@ defmodule Simplates.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:mime, github: "elixir-lang/mime"},
+      {:mime, "~> 1.0.1"},
+      {:ex_doc, ">= 0.0.0", only: :dev},
       {:excoveralls, "~> 0.6", only: :test}
     ]
+  end
+
+  defp package do
+    [# These are the default files included in the package
+    name: :simplates,
+    files: ["lib", "mix.exs", "README.md", "LICENSE.md"],
+    maintainers: ["Luke Strickland"],
+    licenses: ["MIT"],
+    links: %{"GitHub" => "https://github.com/LawfulGood/simplates"}]
+  end
+  
+  defp description do
+    """
+    Simplates are a file format for server-side web programming.
+    """
   end
 end
