@@ -6,7 +6,7 @@ defmodule Simplates.Mixfile do
   def project do
     [app: :simplates,
      version: @version,
-     elixir: "~> 1.3",
+     elixir: "~> 1.4",
      description: description(),
      package: package(),
      build_embedded: Mix.env == :prod,
@@ -24,7 +24,7 @@ defmodule Simplates.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger,:mime]]
+    [extra_applications: [:logger]]
   end
 
   # Dependencies can be Hex packages:
@@ -38,7 +38,7 @@ defmodule Simplates.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:mime, "~> 1.0.1"},
+      {:mime, "~> 1.1"},
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:excoveralls, "~> 0.6", only: :test}
     ]

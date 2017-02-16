@@ -53,4 +53,21 @@ defmodule Simplates.SimplateTest do
     assert res.content_type == "text/html"
   end
 
+  test "create simplate sets default_content_type when bound simplate" do
+    simp = simple_simplate("[---] \n <h1>content</h1>", "index.html.spt")
+    assert simp.default_content_type == "text/html"
+  end
+
+  test "create simplate sets content_type on template page for bound simplate" do
+    simp = simple_simplate("[---] \n example", "index.json.spt")
+
+    assert simp.templates["application/json"]
+    assert simp.templates["application/json"].content_type == "application/json"
+  end
+
+  test "render bound simplate properly uses simplate.default_content_type" do
+    res = Simplate.render(simple_simplate("[---] \n example", "index.json.spt"), "application/json")
+    assert res.content_type == "application/json"
+  end
+
 end
