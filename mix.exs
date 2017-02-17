@@ -39,6 +39,8 @@ defmodule Simplates.Mixfile do
   defp deps do
     [
       {:mime, "~> 1.1"},
+      # Plug is only needed for type resolution for now
+      {:plug, "~> 1.0"}, 
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:excoveralls, "~> 0.6", only: :test}
     ]

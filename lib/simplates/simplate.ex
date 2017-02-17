@@ -70,6 +70,17 @@ defmodule Simplates.Simplate do
   def render(%Simplates.Simplate{} = simplate, content_type, context) do
     content_type = ensure_content_type(content_type)
 
+    {res, context} = simplate.code.renderer.render(simplate.code.compiled, context)
+    
+    # This handles if the return of the code simplate is a type in our context
+    # For now it only handles Plug.Conn
+    context = case res do
+      %Plug.Conn{} ->
+        context ++ [conn: res]
+      _ ->
+        context
+    end
+
     template = simplate.templates[content_type]
 
     {output, bindings} = template.renderer.render(template.compiled, context)

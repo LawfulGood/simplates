@@ -21,7 +21,10 @@ defmodule Simplates.Pagination do
       |> split_pages()
       |> fill_blank_pages()
 
-    %{code: hd(pages), templates: templates_by_content_type(tl(pages))}
+    code = hd(pages)
+    code = %{code | renderer: Simplates.Renderers.CodeRenderer, compiled: Simplates.Renderers.CodeRenderer.compile(code.raw) || []}
+
+    %{code: code, templates: templates_by_content_type(tl(pages))}
   end
 
   defp split_pages(raw) do
