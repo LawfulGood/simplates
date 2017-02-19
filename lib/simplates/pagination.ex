@@ -19,7 +19,7 @@ defmodule Simplates.Pagination do
 
   defp parse_scripts(raw_script) when length(raw_script) == 1 do 
     # For now you can only have one script
-    {tag_name, attributes, children_nodes} = raw_script |> hd()
+    {_, _, children_nodes} = raw_script |> hd()
     page_content = Floki.raw_html(children_nodes)
 
     %Simplates.Page{
@@ -49,7 +49,7 @@ defmodule Simplates.Pagination do
     {}
   end
 
-  defp parse_template({tag_name, attributes, children_nodes} = html_tree) do
+  defp parse_template({_, _, children_nodes} = html_tree) do
     page_content = Floki.raw_html(children_nodes) |> String.trim_leading() |> String.trim_trailing()
 
     {renderer_found, renderer} = attr_or_default(:renderer, Floki.attribute([html_tree], "via"), config(:default_renderer))

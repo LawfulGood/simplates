@@ -58,12 +58,7 @@ defmodule Simplates.Simplate do
       Map.put(acc, page.content_type, page) 
     end)
   end
-
-  defp bound_templates(templates, bound_content_type) when map_size(templates) == 1 and bound_content_type != false do
-    
-  end
-  defp bound_templates(templates, _), do: templates
-
+  
   @doc """
   
   """

@@ -4,7 +4,7 @@
 
 Simplates are a file format for server-side web programming. Used currently in [Infuse](https://github.com/LawfulGood/infuse).
 
-Learn more at: [simplates.org](http://simplates.org/)
+This repository is my future spec for [simplates.org](http://simplates.org/)
 
 ## Why Simplates? 
 Mixing code into templates leads to unmaintainable spaghetti. On the other 
@@ -17,11 +17,14 @@ together as possible, _without_ mixing them.
 ## What does a Simplate look like?
 Here's an example: 
 ```
+<script>
 program = "hellö"
 excitement = :rand.uniform(100)
+</script>
 
-[----] text/html via EEx
+<template type="text/html" via="EEx">
 <h1><%= hello %>, program, my favorite number is <%= num %></h1>
+</template>
 ```
 
 ## Installation
@@ -45,7 +48,7 @@ excitement = :rand.uniform(100)
   3. Create & render like so
   
     ```elixir
-    page = Simplates.Simplate.create_from_string("Hello")
+    page = Simplates.Simplate.create_from_string("<template>Hello</template>")
 
     {output, _} = Simplates.Simplate.render(page, "text/plain")
     ```
