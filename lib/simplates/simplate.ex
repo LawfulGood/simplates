@@ -31,7 +31,7 @@ defmodule Simplates.Simplate do
     pages = Simplates.Pagination.parse_pages(raw)
 
     # Handle the potential of a bound simplate
-    templates = bound_templates(pages.templates, bound_content_type)
+    templates = fill_content_type(pages.templates, bound_content_type, config(:default_content_type))
 
     pages = %{pages | templates: templates}
 
@@ -44,17 +44,23 @@ defmodule Simplates.Simplate do
     }
   end
 
-  defp bound_templates(templates, bound_content_type) when map_size(templates) == 1 and bound_content_type != false do
+  defp fill_content_type(templates, bound_content_type, default_content_type) do
     # I'm really not happy with this function and it's guards
     Enum.reduce(templates, %{}, fn {_content_type, page}, acc ->
       page = cond do
-        page.specline_status in [:empty, :ok_missing_content_type] ->
+        page.content_type == nil && bound_content_type != false ->
           %{page | content_type: bound_content_type}
+        page.content_type == nil && bound_content_type == false ->
+          %{page | content_type: default_content_type}
         true ->
           page
       end
       Map.put(acc, page.content_type, page) 
     end)
+  end
+
+  defp bound_templates(templates, bound_content_type) when map_size(templates) == 1 and bound_content_type != false do
+    
   end
   defp bound_templates(templates, _), do: templates
 

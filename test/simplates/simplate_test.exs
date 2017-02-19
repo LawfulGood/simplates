@@ -8,19 +8,23 @@ defmodule Simplates.SimplateTest do
   end
 
   test "create from file works" do
-    assert Simplate.create_from_file("test/simplates/fake-www/index.spt") == simple_simplate("Greetings, program!", "test/simplates/fake-www/index.spt")
+    assert Simplate.create_from_file("test/simplates/fake-www/index.spt") == simple_simplate("<template>Greetings, program!</template>", "test/simplates/fake-www/index.spt")
   end
 
   test "create from string works" do
-    assert Simplate.create_from_string("Greetings, program!") == simple_simplate("Greetings, program!", nil)
+    assert Simplate.create_from_string("<template>Greetings, program!</template>") == simple_simplate("<template>Greetings, program!</template>", nil)
   end
 
   @basic_simplate """
-    
-    [---] text/plain
+    <script></script>
+
+    <template type="text/plain">
     Greetings, program!
-    [---] text/html
+    </template>
+
+    <template type="text/html">
     <h1>Greetings, program!</h1>
+    </template>
   """
 
   test "render is happy not to negotiate" do
@@ -34,7 +38,7 @@ defmodule Simplates.SimplateTest do
   end
 
   test "render is happy not to negotiate with defaults" do
-    res = Simplate.render(simple_simplate("[---]\nGreetings, program!\n", "index.spt"))
+    res = Simplate.render(simple_simplate("<script></script> <template>Greetings, program!</template>", "index.spt"))
     assert res.output == "Greetings, program!"
   end
 
@@ -54,19 +58,19 @@ defmodule Simplates.SimplateTest do
   end
 
   test "create simplate sets default_content_type when bound simplate" do
-    simp = simple_simplate("[---] \n <h1>content</h1>", "index.html.spt")
+    simp = simple_simplate("<script></script> <template><h1>content</h1></template>", "index.html.spt")
     assert simp.default_content_type == "text/html"
   end
 
   test "create simplate sets content_type on template page for bound simplate" do
-    simp = simple_simplate("[---] \n example", "index.json.spt")
+    simp = simple_simplate("<script></script> <template>example</template>", "index.json.spt")
 
     assert simp.templates["application/json"]
     assert simp.templates["application/json"].content_type == "application/json"
   end
 
   test "render bound simplate properly uses simplate.default_content_type" do
-    res = Simplate.render(simple_simplate("[---] \n example", "index.json.spt"), "application/json")
+    res = Simplate.render(simple_simplate("<script></script> <template>example</template>", "index.json.spt"), "application/json")
     assert res.content_type == "application/json"
   end
 
