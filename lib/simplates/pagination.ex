@@ -10,9 +10,13 @@ defmodule Simplates.Pagination do
 
   import Simplates.Simplate, only: [config: 1]
 
+  @script_regex ~r/^\<script\>(?P<raw>.+?)^\<\/script\>/sim
+  @template_regex ~r/^\<template\>(?P<raw>.+?)^\<\/template\>/sim
+
   def parse_pages(raw) do   
-    script = parse_scripts(Floki.find(raw, "script"))
-    templates = parse_templates(Floki.find(raw, "template"))
+    raw = "<root>" <> raw <> "</root>"
+    script = parse_scripts(Floki.find(raw, "root > script"))
+    templates = parse_templates(Floki.find(raw, "root > template"))
 
     %{code: script, templates: templates}
   end

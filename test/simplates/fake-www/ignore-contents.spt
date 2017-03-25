@@ -1,0 +1,11 @@
+<template>
+    This test ensures anything inside this template tag is ignored entirely by the parser.
+
+    <script>
+    food = "bar";
+    </script>
+
+    <template>
+        I could be a handlebars template or something, who knows :
+    </template>
+</template>

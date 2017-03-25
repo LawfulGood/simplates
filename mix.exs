@@ -38,6 +38,7 @@ defmodule Simplates.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
+      {:sweet_xml, "~> 0.6.5"},
       {:floki, "~> 0.14.0"},
       {:mime, "~> 1.1"},
       # Plug is only needed for type resolution for now
