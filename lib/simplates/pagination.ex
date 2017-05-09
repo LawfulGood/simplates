@@ -10,31 +10,46 @@ defmodule Simplates.Pagination do
 
   import Simplates.Simplate, only: [config: 1]
 
-  @script_regex ~r/^\<script\>(?P<raw>.+?)^\<\/script\>/sim
-  @template_regex ~r/^\<template\>(?P<raw>.+?)^\<\/template\>/sim
+  def parse_pages(raw) do
+    blocks = Simplates.Parser.parse(raw) |> parse_blocks
 
-  def parse_pages(raw) do   
-    raw = "<root>" <> raw <> "</root>"
-    script = parse_scripts(Floki.find(raw, "root > script"))
-    templates = parse_templates(Floki.find(raw, "root > template"))
+    script = parse_scripts(blocks[:script_blocks])
+    templates = parse_templates(blocks[:template_blocks])
 
     %{code: script, templates: templates}
   end
 
+  defp parse_blocks(blocks) do
+    Enum.reduce(blocks, %{}, fn(b, acc) ->
+      {tag, _, _} = Floki.parse(b)
+
+      type = cond do
+        tag == "script" -> :script_blocks
+        tag == "template" -> :template_blocks
+      end
+
+      b = String.trim(b)
+
+      Map.put(acc, type, Map.get(acc, type, []) ++ [b])
+    end)
+  end
+
   defp parse_scripts(raw_script) when length(raw_script) == 1 do 
     # For now you can only have one script
-    {_, _, children_nodes} = raw_script |> hd()
-    page_content = Floki.raw_html(children_nodes)
+    page_content = hd(raw_script) 
+      |> String.split("\n") 
+      |> Enum.drop(1) 
+      |> Enum.drop(-1)
+      |> Enum.join("\n")
 
     %Simplates.Page{
-      raw: page_content, 
-      # Is this the right place to compile?
+      raw: page_content,
       compiled: Simplates.Renderers.CodeRenderer.compile(page_content), 
       renderer: Simplates.Renderers.CodeRenderer,
       content_type: nil
     }
   end
-  defp parse_scripts([]) do
+  defp parse_scripts(nil) do
     %Simplates.Page{
       raw: "", 
       compiled: Simplates.Renderers.CodeRenderer.compile(""), 
@@ -49,12 +64,20 @@ defmodule Simplates.Pagination do
       Map.put(acc, template.content_type, template)
     end)
   end
-  defp parse_templates([]) do
+  defp parse_templates(nil) do
     {}
   end
 
-  defp parse_template({_, _, children_nodes} = html_tree) do
-    page_content = Floki.raw_html(children_nodes) |> String.trim_leading() |> String.trim_trailing()
+  defp parse_template(raw_template) do
+    header = raw_template |> String.split("\n") |> hd()
+  
+    html_tree = Floki.parse(header <> "</template>")
+   
+    page_content = raw_template
+      |> String.split("\n") 
+      |> Enum.drop(1) 
+      |> Enum.drop(-1)
+      |> Enum.join("\n")
 
     {renderer_found, renderer} = attr_or_default(:renderer, Floki.attribute([html_tree], "via"), config(:default_renderer))
     # content type will be fixed in simplates, due to bound simplates
