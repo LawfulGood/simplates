@@ -76,4 +76,10 @@ Greetings, program!
     assert res.content_type == "application/json"
   end
 
+  test "merges Plug.Conn when conn is returned from script" do
+    res = Simplate.render(simple_simplate("<script>\n%Plug.Conn{}\n</script>\n<template>\n</template>"))
+
+    assert res.bindings[:conn] == %Plug.Conn{}
+  end
+
 end
