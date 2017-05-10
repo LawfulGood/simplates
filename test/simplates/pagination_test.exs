@@ -68,4 +68,10 @@ Hello, world! I have SOME code and a specline!
     assert pages.templates["text/plain"]   
   end
 
+  test "no templates gives blank templates" do
+    pages = Pagination.parse_pages("<script>\n</script")
+
+    assert pages.templates == {}
+  end
+
 end
