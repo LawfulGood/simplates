@@ -18,12 +18,12 @@ together as possible, _without_ mixing them.
 Here's an example: 
 ```
 <script>
-program = "hellö"
-excitement = :rand.uniform(100)
+  program = "hellö"
+  excitement = :rand.uniform(100)
 </script>
 
 <template type="text/html" via="EEx">
-<h1><%= hello %>, program, my favorite number is <%= num %></h1>
+  <h1><%= hello %>, program, my favorite number is <%= num %></h1>
 </template>
 ```
 
@@ -33,7 +33,7 @@ excitement = :rand.uniform(100)
 
     ```elixir
     def deps do
-      [{:simplates, "~> 0.1.0"}]
+      [{:simplates, "~> 0.4.0"}]
     end
     ```
 
@@ -48,7 +48,7 @@ excitement = :rand.uniform(100)
   3. Create & render like so
   
     ```elixir
-    page = Simplates.Simplate.create_from_string("<template>Hello</template>")
+    page = Simplates.Simplate.create_from_string("<template>\nHello\n</template>")
 
     {output, _} = Simplates.Simplate.render(page, "text/plain")
     ```

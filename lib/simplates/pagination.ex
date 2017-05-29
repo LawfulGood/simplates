@@ -11,7 +11,7 @@ defmodule Simplates.Pagination do
   import Simplates.Simplate, only: [config: 1]
 
   def parse_pages(raw) do
-    blocks = Simplates.Parser.parse(raw) |> parse_blocks
+    blocks = raw |> Simplates.Parser.parse() |> parse_blocks()
 
     script = parse_scripts(blocks[:script_blocks])
     templates = parse_templates(blocks[:template_blocks])
@@ -26,6 +26,7 @@ defmodule Simplates.Pagination do
       type = cond do
         tag == "script" -> :script_blocks
         tag == "template" -> :template_blocks
+        true -> :unknown_blocks
       end
 
       b = String.trim(b)
@@ -36,7 +37,8 @@ defmodule Simplates.Pagination do
 
   defp parse_scripts(raw_script) when length(raw_script) == 1 do 
     # For now you can only have one script
-    page_content = hd(raw_script) 
+    page_content = raw_script
+      |> hd()
       |> String.split("\n") 
       |> Enum.drop(1) 
       |> Enum.drop(-1)
@@ -111,7 +113,7 @@ defmodule Simplates.Pagination do
   end
 
   defp long_renderer(short) do
-    Module.concat(["Simplates","Renderers", short <> "Renderer"])
+    Module.concat(["Simplates", "Renderers", short <> "Renderer"])
   end
 
 end

@@ -82,4 +82,8 @@ Greetings, program!
     assert res.bindings[:conn] == %Plug.Conn{}
   end
 
+  test "handle no templates" do
+    #res = Simplate.
+  end
+
 end
