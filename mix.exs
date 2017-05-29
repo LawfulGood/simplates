@@ -1,7 +1,7 @@
 defmodule Simplates.Mixfile do
   use Mix.Project
 
-  @version "0.4.0"
+  @version "0.4.1"
 
   def project do
     [app: :simplates,
@@ -45,7 +45,8 @@ defmodule Simplates.Mixfile do
       {:plug, "~> 1.0"}, 
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:earmark, ">= 0.0.0", only: :dev},
-      {:excoveralls, "~> 0.6", only: :test}
+      {:excoveralls, "~> 0.6", only: :test},
+      {:credo, "~> 0.7", only: [:dev, :test]}
     ]
   end
 
