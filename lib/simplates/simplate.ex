@@ -4,7 +4,7 @@ defmodule Simplates.Simplate do
   """
 
   @enforce_keys [:raw, :code, :templates]
-  defstruct raw: nil, code: nil, templates: [], filepath: nil, default_content_type: nil
+  defstruct raw: nil, code: nil, templates: [], filepath: nil, wildcards: [], wild_path: nil, default_content_type: nil
 
   @doc """
   Returns a simplate based on a filesystem path
@@ -40,6 +40,8 @@ defmodule Simplates.Simplate do
       code: pages.code,
       templates: pages.templates,
       filepath: fs_path,
+      wildcards: fs_path |> get_wildcards(),
+      wild_path: fs_path |> replace_wildcards(),
       default_content_type: bound_content_type || config(:default_content_type)
     }
   end
@@ -116,5 +118,19 @@ defmodule Simplates.Simplate do
       false ->
         config(:default_content_type)
     end
+  end
+
+  defp get_wildcards(filename) when is_bitstring(filename) do
+    Regex.scan(~r/\%\w+/, filename) |> List.flatten()
+  end
+  defp get_wildcards(nil) do
+    []
+  end
+
+  defp replace_wildcards(filename) when is_bitstring(filename) do
+    Regex.replace(~r/\%\w+/, filename, "%wild%")
+  end
+  defp replace_wildcards(nil) do
+    []
   end
 end

@@ -65,7 +65,7 @@ Hello, world! I have SOME code and a specline!
 
     assert map_size(pages.templates) == 2
     assert pages.templates["text/html"]
-    assert pages.templates["text/plain"]   
+    assert pages.templates["text/plain"]
   end
 
   test "no templates gives blank templates" do
